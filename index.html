@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111827">
+  <title>English IT Trainer - MAALSI A4</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --surface: #ffffff;
+      --surface-2: #eef2f7;
+      --text: #152033;
+      --muted: #667085;
+      --line: #dde3ec;
+      --primary: #f5c400;
+      --primary-strong: #d9a900;
+      --dark: #111827;
+      --success: #15803d;
+      --success-soft: #dcfce7;
+      --danger: #c2410c;
+      --danger-soft: #ffedd5;
+      --info: #1d4ed8;
+      --info-soft: #dbeafe;
+      --shadow: 0 18px 50px rgba(15, 23, 42, .10);
+      --radius: 22px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0b1020;
+      --surface: #131b2d;
+      --surface-2: #1b2539;
+      --text: #f5f7fb;
+      --muted: #aab4c8;
+      --line: #2b3952;
+      --dark: #f8fafc;
+      --shadow: 0 18px 50px rgba(0, 0, 0, .34);
+      --success-soft: rgba(21, 128, 61, .22);
+      --danger-soft: rgba(194, 65, 12, .22);
+      --info-soft: rgba(29, 78, 216, .23);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 90% 0%, rgba(245, 196, 0, .16), transparent 28rem),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 3px solid rgba(245, 196, 0, .45);
+      outline-offset: 2px;
+    }
+    .hidden { display: none !important; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: color-mix(in srgb, var(--surface) 88%, transparent);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--line);
+    }
+    .topbar-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      background: var(--dark);
+      color: var(--primary);
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      box-shadow: 0 8px 22px rgba(15,23,42,.18);
+      flex: 0 0 auto;
+    }
+    .brand-title { font-weight: 900; letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .brand-subtitle { color: var(--muted); font-size: .82rem; margin-top: 2px; }
+    .top-actions { display: flex; gap: 8px; }
+
+    .icon-btn, .ghost-btn, .secondary-btn, .primary-btn, .danger-btn {
+      border: 0;
+      border-radius: 13px;
+      min-height: 44px;
+      padding: 0 16px;
+      font-weight: 800;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .icon-btn { width: 44px; padding: 0; background: var(--surface-2); color: var(--text); }
+    .ghost-btn { background: transparent; color: var(--text); border: 1px solid var(--line); }
+    .secondary-btn { background: var(--surface-2); color: var(--text); }
+    .primary-btn { background: var(--primary); color: #181818; box-shadow: 0 10px 24px rgba(245,196,0,.24); }
+    .danger-btn { background: var(--danger-soft); color: var(--danger); }
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+    button:disabled { cursor: not-allowed; opacity: .55; transform: none; }
+
+    main { max-width: 1180px; margin: 0 auto; padding: 28px 20px 70px; }
+    .view { animation: fade .25s ease; }
+    @keyframes fade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+    .hero {
+      background: linear-gradient(135deg, #111827 0%, #1f2937 65%, #3a330d 140%);
+      color: white;
+      border-radius: 28px;
+      padding: clamp(24px, 5vw, 52px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+    .hero::after {
+      content: "";
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      position: absolute;
+      right: -120px;
+      top: -130px;
+      background: rgba(245,196,0,.20);
+      filter: blur(1px);
+    }
+    .hero-grid { display: grid; grid-template-columns: 1.45fr .75fr; gap: 30px; align-items: center; position: relative; z-index: 1; }
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.1);
+      font-size: .82rem;
+      font-weight: 800;
+      color: #f8d84d;
+    }
+    .hero h1 { margin: 16px 0 12px; font-size: clamp(2rem, 5vw, 4.2rem); line-height: .98; letter-spacing: -.055em; max-width: 760px; }
+    .hero p { margin: 0; max-width: 690px; color: #d7deea; line-height: 1.65; font-size: 1.05rem; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+    .hero .secondary-btn { background: rgba(255,255,255,.12); color: white; border: 1px solid rgba(255,255,255,.16); }
+    .date-card {
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.14);
+      padding: 22px;
+      border-radius: 22px;
+      backdrop-filter: blur(10px);
+    }
+    .date-card strong { display: block; font-size: 2.8rem; color: var(--primary); margin: 6px 0; }
+    .date-card span { color: #d7deea; line-height: 1.5; }
+
+    .section-title { display: flex; justify-content: space-between; align-items: end; gap: 16px; margin: 34px 0 14px; }
+    .section-title h2 { margin: 0; font-size: 1.45rem; letter-spacing: -.025em; }
+    .section-title p { margin: 4px 0 0; color: var(--muted); }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px; box-shadow: 0 8px 24px rgba(15,23,42,.04); }
+    .stat-label { color: var(--muted); font-size: .86rem; font-weight: 700; }
+    .stat-value { font-size: 1.85rem; font-weight: 950; margin-top: 6px; letter-spacing: -.04em; }
+    .stat-foot { color: var(--muted); font-size: .78rem; margin-top: 4px; }
+
+    .mode-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+    .mode-card {
+      text-align: left;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 20px;
+      padding: 20px;
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 8px 24px rgba(15,23,42,.04);
+    }
+    .mode-card:hover { border-color: color-mix(in srgb, var(--primary) 65%, var(--line)); box-shadow: 0 14px 34px rgba(15,23,42,.09); }
+    .mode-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 13px; background: var(--surface-2); font-weight: 950; color: var(--info); }
+    .mode-card h3 { margin: 18px 0 7px; font-size: 1.05rem; }
+    .mode-card p { margin: 0; color: var(--muted); line-height: 1.5; font-size: .9rem; }
+    .mode-meta { margin-top: 16px; font-size: .78rem; font-weight: 850; color: var(--info); }
+
+    .setup-card, .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: 0 10px 30px rgba(15,23,42,.05);
+    }
+    .setup-grid { display: grid; grid-template-columns: 1.3fr 1fr 1fr auto; gap: 14px; align-items: end; }
+    label { display: block; font-size: .82rem; font-weight: 850; color: var(--muted); margin-bottom: 7px; }
+    select, input[type="search"] {
+      width: 100%;
+      min-height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      padding: 0 13px;
+      color: var(--text);
+      background: var(--surface-2);
+    }
+    .switch-row { display: flex; align-items: center; gap: 9px; min-height: 46px; }
+    .switch-row input { accent-color: var(--primary-strong); width: 19px; height: 19px; }
+    .switch-row span { font-weight: 750; font-size: .9rem; }
+
+    .quiz-shell { max-width: 850px; margin: 0 auto; }
+    .quiz-top { display: flex; justify-content: space-between; align-items: center; gap: 14px; margin-bottom: 16px; }
+    .quiz-top-left { min-width: 0; }
+    .quiz-mode { font-weight: 900; font-size: 1.05rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .quiz-counter { color: var(--muted); font-size: .86rem; margin-top: 3px; }
+    .progress-track { height: 9px; background: var(--surface-2); border-radius: 999px; overflow: hidden; border: 1px solid var(--line); }
+    .progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--primary-strong), var(--primary)); transition: width .28s ease; }
+
+    .question-card { margin-top: 18px; background: var(--surface); border: 1px solid var(--line); border-radius: 26px; padding: clamp(22px, 4vw, 38px); box-shadow: var(--shadow); }
+    .question-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 20px; }
+    .badge { display: inline-flex; align-items: center; min-height: 30px; padding: 0 10px; border-radius: 999px; font-size: .76rem; font-weight: 900; background: var(--info-soft); color: var(--info); }
+    .page-ref { color: var(--muted); font-size: .78rem; }
+    .question-label { color: var(--muted); font-size: .82rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+    .question-text { margin: 9px 0 26px; font-size: clamp(1.35rem, 3vw, 2rem); line-height: 1.35; letter-spacing: -.025em; font-weight: 900; }
+    .question-text.definition { font-size: clamp(1.12rem, 2.4vw, 1.48rem); line-height: 1.55; font-weight: 750; }
+    .options { display: grid; gap: 11px; }
+    .option-btn {
+      width: 100%;
+      min-height: 60px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: var(--surface-2);
+      color: var(--text);
+      padding: 12px 15px;
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 12px;
+      align-items: center;
+      text-align: left;
+      font-weight: 760;
+      line-height: 1.4;
+    }
+    .option-btn:hover:not(:disabled) { border-color: var(--primary-strong); background: color-mix(in srgb, var(--primary) 9%, var(--surface-2)); }
+    .option-key { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--surface); border: 1px solid var(--line); font-weight: 950; }
+    .option-btn.correct { border-color: var(--success); background: var(--success-soft); color: var(--success); }
+    .option-btn.wrong { border-color: var(--danger); background: var(--danger-soft); color: var(--danger); }
+    .feedback {
+      margin-top: 17px;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      line-height: 1.55;
+    }
+    .feedback.success { background: var(--success-soft); border-color: color-mix(in srgb, var(--success) 40%, var(--line)); }
+    .feedback.error { background: var(--danger-soft); border-color: color-mix(in srgb, var(--danger) 40%, var(--line)); }
+    .feedback-title { font-weight: 950; margin-bottom: 4px; }
+    .feedback-answer { font-weight: 850; }
+    .quiz-footer { display: flex; justify-content: space-between; gap: 12px; margin-top: 18px; flex-wrap: wrap; }
+    .quiz-footer-right { display: flex; gap: 10px; margin-left: auto; }
+    .shortcut-note { color: var(--muted); font-size: .76rem; margin-top: 14px; text-align: center; }
+
+    .result-hero { text-align: center; padding: 34px 22px; }
+    .result-score { width: 150px; height: 150px; margin: 0 auto 18px; border-radius: 50%; display: grid; place-items: center; border: 13px solid var(--surface-2); box-shadow: inset 0 0 0 2px var(--line); }
+    .result-score strong { display: block; font-size: 2.5rem; letter-spacing: -.05em; }
+    .result-score span { color: var(--muted); font-weight: 750; }
+    .result-grade { display: inline-flex; align-items: center; justify-content: center; min-width: 54px; height: 36px; border-radius: 999px; background: var(--primary); color: #181818; font-weight: 950; margin-bottom: 8px; }
+    .result-hero h2 { margin: 6px 0 8px; font-size: 1.8rem; }
+    .result-hero p { color: var(--muted); margin: 0 auto; max-width: 600px; line-height: 1.55; }
+    .breakdown-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+    .breakdown { padding: 16px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface-2); }
+    .breakdown strong { display: block; font-size: 1.35rem; margin-top: 4px; }
+    .mistake-list { display: grid; gap: 10px; margin-top: 14px; }
+    .mistake-item { border: 1px solid var(--line); border-radius: 16px; padding: 15px; background: var(--surface-2); }
+    .mistake-item .prompt { font-weight: 850; line-height: 1.45; }
+    .mistake-item .answer { color: var(--success); font-weight: 850; margin-top: 7px; }
+    .result-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+
+    .library-toolbar { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-bottom: 14px; }
+    .tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+    .tab { min-height: 42px; padding: 0 13px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--text); font-weight: 850; }
+    .tab.active { background: var(--dark); color: var(--bg); border-color: var(--dark); }
+    .library-list { display: grid; gap: 10px; }
+    .library-item { border: 1px solid var(--line); border-radius: 16px; background: var(--surface); padding: 16px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center; }
+    .library-item h3 { margin: 0 0 5px; font-size: .96rem; line-height: 1.45; }
+    .library-answer { color: var(--info); font-weight: 850; line-height: 1.45; }
+    .library-meta { color: var(--muted); font-size: .76rem; margin-top: 7px; }
+    .empty { text-align: center; padding: 42px 20px; color: var(--muted); }
+
+    .toast { position: fixed; right: 20px; bottom: 20px; z-index: 50; max-width: 340px; background: var(--dark); color: var(--bg); border-radius: 14px; padding: 13px 16px; box-shadow: var(--shadow); font-weight: 750; animation: toastIn .22s ease; }
+    @keyframes toastIn { from { transform: translateY(10px); opacity: 0; } }
+
+    .footer-note { margin-top: 32px; color: var(--muted); font-size: .78rem; text-align: center; line-height: 1.6; }
+
+    @media (max-width: 960px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .date-card { max-width: 420px; }
+      .stats-grid, .mode-grid { grid-template-columns: repeat(2, 1fr); }
+      .setup-grid { grid-template-columns: 1fr 1fr; }
+      .setup-grid .primary-btn { width: 100%; }
+    }
+    @media (max-width: 640px) {
+      .topbar-inner, main { padding-left: 14px; padding-right: 14px; }
+      .brand-subtitle { display: none; }
+      .hero { border-radius: 22px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .mode-grid, .setup-grid, .breakdown-grid { grid-template-columns: 1fr; }
+      .mode-card { min-height: 155px; }
+      .question-card { border-radius: 20px; padding: 20px 16px; }
+      .option-btn { grid-template-columns: 32px 1fr; padding: 11px; }
+      .quiz-top { align-items: flex-start; }
+      .library-toolbar { grid-template-columns: 1fr; }
+      .library-item { grid-template-columns: 1fr; }
+      .library-item .icon-btn { width: 100%; }
+      .result-score { width: 130px; height: 130px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">IT</div>
+        <div>
+          <div class="brand-title">English IT Trainer</div>
+          <div class="brand-subtitle">MAALSI A4 · 126 entrées</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button class="icon-btn" id="homeBtn" title="Accueil" aria-label="Retour à l'accueil">⌂</button>
+        <button class="icon-btn" id="themeBtn" title="Changer de thème" aria-label="Changer de thème">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="homeView" class="view">
+      <div class="hero">
+        <div class="hero-grid">
+          <div>
+            <span class="eyebrow">Préparation ciblée · Anglais métier</span>
+            <h1>Apprends tout le support comme au vrai QCU.</h1>
+            <p>50 mots, 51 expressions listées et 25 définitions issus du document de l’école. Les réponses proposées respectent le format annoncé : une question et quatre choix.</p>
+            <div class="hero-actions">
+              <button class="primary-btn" id="smartStartBtn">Révision intelligente</button>
+              <button class="secondary-btn" id="examStartBtn">Lancer l’examen blanc</button>
+            </div>
+          </div>
+          <aside class="date-card">
+            <span>Test reporté au</span>
+            <strong>17 juillet</strong>
+            <span>Vendredi matin · <b id="countdownText"></b></span>
+          </aside>
+        </div>
+      </div>
+
+      <div class="section-title">
+        <div><h2>Ta progression</h2><p>Enregistrée automatiquement sur cet appareil.</p></div>
+        <button class="ghost-btn" id="resetBtn">Réinitialiser</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-label">Notions maîtrisées</div><div class="stat-value" id="masteredStat">0/126</div><div class="stat-foot">2 bonnes réponses minimum</div></div>
+        <div class="stat-card"><div class="stat-label">Meilleur score</div><div class="stat-value" id="bestStat">—</div><div class="stat-foot">Sur l’examen complet</div></div>
+        <div class="stat-card"><div class="stat-label">À revoir</div><div class="stat-value" id="mistakesStat">0</div><div class="stat-foot">Dernière réponse incorrecte</div></div>
+        <div class="stat-card"><div class="stat-label">Précision globale</div><div class="stat-value" id="accuracyStat">—</div><div class="stat-foot">Toutes les tentatives</div></div>
+      </div>
+
+      <div class="section-title"><div><h2>Choisis ton mode</h2><p>Du rapide au plus proche de l’épreuve.</p></div></div>
+      <div class="mode-grid">
+        <button class="mode-card" id="smartModeBtn">
+          <div><div class="mode-icon">AI</div><h3>Révision intelligente</h3><p>Priorité aux notions jamais vues ou souvent ratées.</p></div>
+          <div class="mode-meta">15 questions ciblées</div>
+        </button>
+        <button class="mode-card" id="mistakeModeBtn">
+          <div><div class="mode-icon">↻</div><h3>Revoir mes erreurs</h3><p>Un QCM construit uniquement avec tes erreurs récentes.</p></div>
+          <div class="mode-meta" id="mistakeModeMeta">Aucune erreur</div>
+        </button>
+        <button class="mode-card" id="examModeBtn">
+          <div><div class="mode-icon">A</div><h3>Examen blanc</h3><p>125 questions tirées du support, sans correction immédiate, avec note A à D.</p></div>
+          <div class="mode-meta">Format complet</div>
+        </button>
+        <button class="mode-card" id="libraryBtn">
+          <div><div class="mode-icon">≡</div><h3>Liste de révision</h3><p>Recherche, traduction, page source et prononciation.</p></div>
+          <div class="mode-meta">Consulter les 126 entrées</div>
+        </button>
+      </div>
+
+      <div class="section-title"><div><h2>Entraînement personnalisé</h2><p>Choisis une catégorie, un volume et le type de correction.</p></div></div>
+      <div class="setup-card">
+        <div class="setup-grid">
+          <div>
+            <label for="categorySelect">Catégorie</label>
+            <select id="categorySelect">
+              <option value="all">Tout mélanger</option>
+              <option value="word">50 mots métier</option>
+              <option value="expression">50 expressions métier</option>
+              <option value="definition">25 définitions expert</option>
+            </select>
+          </div>
+          <div>
+            <label for="countSelect">Nombre de questions</label>
+            <select id="countSelect">
+              <option value="10">10 questions</option>
+              <option value="20" selected>20 questions</option>
+              <option value="30">30 questions</option>
+              <option value="50">50 questions</option>
+              <option value="all">Toutes disponibles</option>
+            </select>
+          </div>
+          <div>
+            <label>Correction</label>
+            <div class="switch-row"><input type="checkbox" id="instantToggle" checked><span>Immédiate</span></div>
+          </div>
+          <button class="primary-btn" id="customStartBtn">Commencer</button>
+        </div>
+      </div>
+
+      <p class="footer-note">Le support annonce 50 expressions, mais 51 lignes sont réellement listées. L’application conserve les 126 entrées pour ne rien oublier ; l’examen blanc en tire 125 afin de respecter le barème officiel.</p>
+    </section>
+
+    <section id="quizView" class="view hidden">
+      <div class="quiz-shell">
+        <div class="quiz-top">
+          <div class="quiz-top-left">
+            <div class="quiz-mode" id="quizModeTitle">Entraînement</div>
+            <div class="quiz-counter" id="quizCounter">Question 1 sur 20</div>
+          </div>
+          <button class="ghost-btn" id="quitQuizBtn">Quitter</button>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+        <article class="question-card">
+          <div class="question-head">
+            <span class="badge" id="questionBadge">Mot métier</span>
+            <span class="page-ref" id="pageRef">Source : p. 1</span>
+          </div>
+          <div class="question-label" id="questionInstruction">Choisis la traduction anglaise</div>
+          <div class="question-text" id="questionText"></div>
+          <div class="options" id="optionsContainer"></div>
+          <div class="feedback hidden" id="feedbackBox"></div>
+          <div class="quiz-footer">
+            <button class="secondary-btn" id="unknownBtn">Je ne sais pas</button>
+            <div class="quiz-footer-right">
+              <button class="secondary-btn hidden" id="speakBtn">Écouter</button>
+              <button class="primary-btn hidden" id="nextBtn">Question suivante</button>
+            </div>
+          </div>
+          <div class="shortcut-note">Raccourcis : touches 1 à 4 pour répondre · Entrée pour continuer</div>
+        </article>
+      </div>
+    </section>
+
+    <section id="resultView" class="view hidden">
+      <div class="panel">
+        <div class="result-hero">
+          <div class="result-score"><div><strong id="resultScore">0/0</strong><span id="resultPercent">0 %</span></div></div>
+          <div class="result-grade hidden" id="resultGrade">A</div>
+          <h2 id="resultTitle">Session terminée</h2>
+          <p id="resultMessage"></p>
+        </div>
+        <div class="breakdown-grid" id="breakdownGrid"></div>
+        <div id="mistakeSection">
+          <div class="section-title"><div><h2>Réponses à revoir</h2><p>La bonne réponse est affichée sous chaque question.</p></div></div>
+          <div class="mistake-list" id="resultMistakes"></div>
+        </div>
+        <div class="result-actions">
+          <button class="primary-btn" id="retryMistakesBtn">Rejouer mes erreurs</button>
+          <button class="secondary-btn" id="restartBtn">Nouvelle session</button>
+          <button class="ghost-btn" id="resultHomeBtn">Accueil</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="libraryView" class="view hidden">
+      <div class="section-title">
+        <div><h2>Liste complète de révision</h2><p>Les formulations sont celles du support fourni.</p></div>
+        <button class="ghost-btn" id="libraryHomeBtn">Accueil</button>
+      </div>
+      <div class="library-toolbar">
+        <input type="search" id="librarySearch" placeholder="Rechercher en français ou en anglais…">
+        <div class="tabs" id="libraryTabs">
+          <button class="tab active" data-filter="all">Tout</button>
+          <button class="tab" data-filter="word">Mots</button>
+          <button class="tab" data-filter="expression">Expressions</button>
+          <button class="tab" data-filter="definition">Définitions</button>
+        </div>
+      </div>
+      <div class="library-list" id="libraryList"></div>
+    </section>
+  </main>
+
+  <div class="toast hidden" id="toast"></div>
+
+  <script>
+    const DATA = [{"id":"w01","type":"word","fr":"Logiciel","answer":"Software","page":1},{"id":"w02","type":"word","fr":"Cahier des charges","answer":"Specifications","page":1},{"id":"w03","type":"word","fr":"Navigateur","answer":"Browser","page":1},{"id":"w04","type":"word","fr":"Moteur de recherche","answer":"Search engine","page":1},{"id":"w05","type":"word","fr":"Programmation","answer":"Programming","page":1},{"id":"w06","type":"word","fr":"Nom de domaine","answer":"Domain name","page":1},{"id":"w07","type":"word","fr":"Compte","answer":"Account","page":2},{"id":"w08","type":"word","fr":"Créer un compte","answer":"To sign up","page":2},{"id":"w09","type":"word","fr":"Définir un mot de passe","answer":"To set a password","page":2},{"id":"w10","type":"word","fr":"Utilisateur","answer":"User","page":2},{"id":"w11","type":"word","fr":"Identifiant","answer":"Username","page":2},{"id":"w12","type":"word","fr":"Bibliothèque","answer":"Library","page":2},{"id":"w13","type":"word","fr":"Cadre de travail","answer":"Framework","page":2},{"id":"w14","type":"word","fr":"Environnement de développement","answer":"Integrated development environment - IDE","page":2},{"id":"w15","type":"word","fr":"Maintenance","answer":"Maintenance","page":2},{"id":"w16","type":"word","fr":"Sauvegarde","answer":"Backup","page":2},{"id":"w17","type":"word","fr":"Base de données","answer":"Database","page":2},{"id":"w18","type":"word","fr":"Flux de données","answer":"Data flow","page":2},{"id":"w19","type":"word","fr":"Stockage de données","answer":"Data storage","page":2},{"id":"w20","type":"word","fr":"Pare-feu","answer":"Firewall","page":2},{"id":"w21","type":"word","fr":"Logiciel espion","answer":"Spyware","page":2},{"id":"w22","type":"word","fr":"Bande passante","answer":"Bandwidth","page":2},{"id":"w23","type":"word","fr":"Interface de programmation","answer":"Application Programming Interface - API","page":2},{"id":"w24","type":"word","fr":"Balise","answer":"Markup","page":2},{"id":"w25","type":"word","fr":"Langage binaire","answer":"Binary language","page":2},{"id":"w26","type":"word","fr":"Système de gestion de contenu","answer":"Content management system - CMS","page":2},{"id":"w27","type":"word","fr":"Serveur","answer":"Server / Host","page":2},{"id":"w28","type":"word","fr":"Service d’hébergement","answer":"Hosting service","page":2},{"id":"w29","type":"word","fr":"Plan de site / Arborescence","answer":"Sitemap","page":2},{"id":"w30","type":"word","fr":"Site statique","answer":"Static site","page":2},{"id":"w31","type":"word","fr":"Site dynamique","answer":"Dynamic site","page":2},{"id":"w32","type":"word","fr":"Site animé","answer":"Animated site","page":2},{"id":"w33","type":"word","fr":"Refonte","answer":"Redesign","page":2},{"id":"w34","type":"word","fr":"Charte graphique","answer":"Graphic charter","page":2},{"id":"w35","type":"word","fr":"Bannière","answer":"Banner","page":2},{"id":"w36","type":"word","fr":"Référencement","answer":"Referencing","page":2},{"id":"w37","type":"word","fr":"Optimisation pour les moteurs de recherche","answer":"Search Engine Optimization - SEO","page":2},{"id":"w38","type":"word","fr":"Référencement payant","answer":"Search Engine Advertising - SEA","page":2},{"id":"w39","type":"word","fr":"Référencement abusif","answer":"Spamdexing","page":2},{"id":"w40","type":"word","fr":"Réseau Social","answer":"Social Network","page":2},{"id":"w41","type":"word","fr":"Protocole de transfert de fichier","answer":"File Transfer Protocol","page":2},{"id":"w42","type":"word","fr":"Transfert de fichier","answer":"File transfer","page":2},{"id":"w43","type":"word","fr":"Partage de fichier","answer":"File sharing","page":2},{"id":"w44","type":"word","fr":"Télécharger","answer":"To download/To upload","page":2},{"id":"w45","type":"word","fr":"Visite virtuelle","answer":"Virtual visit","page":2},{"id":"w46","type":"word","fr":"Objet interactif","answer":"Interactive object","page":2},{"id":"w47","type":"word","fr":"Interface utilisateur graphique","answer":"Graphic user interface","page":2},{"id":"w48","type":"word","fr":"Prototype d’interface utilisateur","answer":"Mock-up","page":3},{"id":"w49","type":"word","fr":"Expérience utilisateur","answer":"User experience","page":3},{"id":"w50","type":"word","fr":"Maquette fonctionnelle d’un site","answer":"Wireframe","page":3},{"id":"e01","type":"expression","fr":"Déclarer une variable en langage java","answer":"Declare a variable in java language","page":3},{"id":"e02","type":"expression","fr":"Utiliser des tableaux pour stocker plusieurs valeurs dans une seule variable","answer":"Use arrays to store multiple values in a single variable","page":3},{"id":"e03","type":"expression","fr":"Créer une chaîne en java","answer":"Create a string in java","page":3},{"id":"e04","type":"expression","fr":"Exécuter des boucles","answer":"Execute loops","page":3},{"id":"e05","type":"expression","fr":"Effectuer une opération d'entrée ou de sortie","answer":"Perform an input or output operation","page":3},{"id":"e06","type":"expression","fr":"Traiter une information représentée sous sa forme binaire","answer":"Process a binary information","page":3},{"id":"e07","type":"expression","fr":"Comprendre les principaux livrables, les jalons, ainsi que les rôles et les responsabilités de chaque personne impliquée dans une charte de projet","answer":"Understand the main deliverables, milestones, as well as the roles and responsibilities of each person involved in a project charter","page":3},{"id":"e08","type":"expression","fr":"Utiliser les opérateurs booléens pour réduire, étendre ou affiner les résultats de recherche","answer":"Use Boolean operators to narrow, expand, or refine search results","page":3},{"id":"e09","type":"expression","fr":"Créer une procédure stockée dans une base de données","answer":"Create a stored procedure in a database","page":3},{"id":"e10","type":"expression","fr":"Utiliser les algorithmes les plus efficaces possibles pour résoudre des problèmes","answer":"Use the most efficient algorithms possible to solve problems","page":3},{"id":"e11","type":"expression","fr":"Développer des solutions logicielles fiables et fonctionnelles","answer":"Develop reliable and functional software solutions","page":3},{"id":"e12","type":"expression","fr":"Se positionner comme expert technique","answer":"Position oneself as a technical expert","page":3},{"id":"e13","type":"expression","fr":"Gérer et optimiser la base de données","answer":"Manage and optimize the database","page":3},{"id":"e14","type":"expression","fr":"Réaliser une étude logicielle","answer":"Conduct a software study","page":3},{"id":"e15","type":"expression","fr":"Concevoir l’architecture des applications","answer":"Design application architecture","page":3},{"id":"e16","type":"expression","fr":"Assurer la gestion des données","answer":"Ensure data management","page":3},{"id":"e17","type":"expression","fr":"Sécuriser les applications","answer":"Secure applications","page":3},{"id":"e18","type":"expression","fr":"Implémenter des solutions logicielles","answer":"Implement software solutions","page":3},{"id":"e19","type":"expression","fr":"Créer des programmes","answer":"Build programs","page":3},{"id":"e20","type":"expression","fr":"Écrire et tester le code","answer":"Write and test code","page":3},{"id":"e21","type":"expression","fr":"Collaborer avec des développeurs","answer":"Collaborate with developers","page":3},{"id":"e22","type":"expression","fr":"Utiliser des outils de développement","answer":"Use development tools","page":4},{"id":"e23","type":"expression","fr":"Créer des applications ergonomiques","answer":"Create ergonomic applications","page":4},{"id":"e24","type":"expression","fr":"Ecouter, analyser et rédiger les besoins","answer":"Listen, analyze and write needs","page":4},{"id":"e25","type":"expression","fr":"Être garant de la pérennité et de l’évolution des solutions","answer":"To guarantee the sustainability and evolution of solutions","page":4},{"id":"e26","type":"expression","fr":"Respecter les délais, les coûts et la qualité","answer":"Meet deadlines, costs and quality","page":4},{"id":"e27","type":"expression","fr":"Satisfaire les attentes du client","answer":"Meet client expectations","page":4},{"id":"e28","type":"expression","fr":"Piloter une projet d’ingénierie logicielle","answer":"Lead a software engineering project","page":4},{"id":"e29","type":"expression","fr":"Construire un cahier des charges","answer":"Build specifications","page":4},{"id":"e30","type":"expression","fr":"Gérer les données de l’entreprise","answer":"Manage company data","page":4},{"id":"e31","type":"expression","fr":"Développer des applications mobiles","answer":"Develop mobile apps","page":4},{"id":"e32","type":"expression","fr":"Accompagner la stratégie de l’entreprise","answer":"Support the company’s strategy","page":4},{"id":"e33","type":"expression","fr":"Suivre les principes et bonnes pratiques de développement","answer":"Follow development principles and best practices","page":4},{"id":"e34","type":"expression","fr":"Analyser et identifier tous les problèmes potentiels","answer":"Analyze and identify any potential problems","page":4},{"id":"e35","type":"expression","fr":"Améliorer et maintenir le logiciel à long terme","answer":"Improve and maintain the software in the long term","page":4},{"id":"e36","type":"expression","fr":"Traduire le besoin du client en demandes fonctionnelles","answer":"Translate the client's need into functional demands","page":4},{"id":"e37","type":"expression","fr":"Analyser et décrire les tâches à réaliser par l’ordinateur","answer":"Analyze and describe the tasks to be performed by the computer","page":4},{"id":"e38","type":"expression","fr":"Déterminer et schématiser les fonctionnalités du logiciel","answer":"Determine and schematize the software functionalities","page":4},{"id":"e39","type":"expression","fr":"Déceler les défauts de programmation","answer":"Identify programming defects","page":4},{"id":"e40","type":"expression","fr":"Effectuer des traitements par lot","answer":"Perform batch processes","page":4},{"id":"e41","type":"expression","fr":"Contrôler les évolutions et les différentes versions du logiciel","answer":"Control developments and different versions of the software","page":4},{"id":"e42","type":"expression","fr":"Maintenir en condition opérationnelle le logiciel","answer":"Keep the software in operational condition","page":4},{"id":"e43","type":"expression","fr":"Mettre en production à l’issue des phases de qualification et d’intégration","answer":"Put into production at the end of the qualification and integration phases","page":4},{"id":"e44","type":"expression","fr":"Rédiger le code source qui constitue le corps du logiciel","answer":"Write the source code that forms the body of the software","page":4},{"id":"e45","type":"expression","fr":"Mettre en œuvre l’agilité au sein d’une équipe de développeurs","answer":"Implement agility as part of a team of developers","page":4},{"id":"e46","type":"expression","fr":"Diriger des projets collaboratifs","answer":"Lead collaborative projects","page":4},{"id":"e47","type":"expression","fr":"Vérifier que les fonctions offertes par le logiciel correspondent aux attentes du client","answer":"Make sure the features offered by the software are in line with the customer's expectations","page":4},{"id":"e48","type":"expression","fr":"Définir les étapes clés de cycle de vie du projet","answer":"Define key lifecycle milestones for the project","page":4},{"id":"e49","type":"expression","fr":"Intégrer les environnements de développement","answer":"Integrate development environments","page":4},{"id":"e50","type":"expression","fr":"Gérer les modifications apportées au code source","answer":"Manage changes to source code","page":5},{"id":"e51","type":"expression","fr":"Déployer le logiciel sur un serveur d’applications","answer":"Deploy the software to an application server","page":5},{"id":"d01","type":"definition","frTerm":"Dette technique","answer":"Technical debt","definition":"Technical debt is the failure to comply with the design of software, intentional or not, which entails additional costs in the future.","page":5},{"id":"d02","type":"definition","frTerm":"Progiciel de Gestion Intégré – PGI","answer":"Enterprise Resource Planning - ERP","definition":"The ERP is an information system that is used to manage and follow all of a company's information and operational services on a daily basis.","page":5},{"id":"d03","type":"definition","frTerm":"Facteur clé de succès","answer":"Key success factor","definition":"A key success factor is an essential consideration in addressing a market. Each company faces several key success factor that need to be mastered at the risk of not being competitive.","page":5},{"id":"d04","type":"definition","frTerm":"Test unitaire","answer":"Unit testing","definition":"Unit testing or component testing is a procedure to verify the proper functioning of a specific part of a software or portion of a program.","page":5},{"id":"d05","type":"definition","frTerm":"Gestion des erreurs","answer":"Error management","definition":"Error management brings together the various ways to protect the user from errors and allow them to correct them. The goal is to minimize interruptions due to errors.","page":5},{"id":"d06","type":"definition","frTerm":"Gestion des versions","answer":"Version / Versioning management","definition":"Version management involves managing all versions of one or more files.","page":5},{"id":"d07","type":"definition","frTerm":"Pipeline logiciel","answer":"Software pipelining","definition":"Software pipelining is a technique used by compilers to optimize loop execution.","page":6},{"id":"d08","type":"definition","frTerm":"Maintenabilité","answer":"Maintainability","definition":"Maintainability is, in the IT field, the ability for components or applications to be maintained, consistently and at a lower cost, in working order.","page":6},{"id":"d09","type":"definition","frTerm":"Patron de conception","answer":"Design pattern","definition":"A design pattern is a characteristic module arrangement, recognized as good practice in response to a software design problem. It describes a standard solution that can be used in the design of different software.","page":6},{"id":"d10","type":"definition","frTerm":"Politique de test","answer":"Testing policy","definition":"A high-level document outlining the organization's key principles, approaches and objectives regarding testing activity. The test policy is therefore a document that describes why testing is done.","page":6},{"id":"d11","type":"definition","frTerm":"Requête base de données","answer":"Database query","definition":"A query is a questioning of a database. It may have a number of criteria for specifying the application. There are several query languages, which are specific to the structure of the databases.","page":6},{"id":"d12","type":"definition","frTerm":"Visualisation de données","answer":"Data visualization","definition":"Data visualization is a set of graphical representation methods, in two or three dimensions, using color and frames or not. Computer resources allow complex sets of data to be represented in a simpler, educational and pedagogical way.","page":6},{"id":"d13","type":"definition","frTerm":"Microservices","answer":"Microservices","definition":"Microservices are a software development technique, a variant of the architectural style of service-oriented architecture, which structures an application as a set of poorly coupled services.","page":6},{"id":"d14","type":"definition","frTerm":"« Plateforme à la demande »","answer":"Platform as a service (Paas)","definition":"A cloud service category that offers a processing platform and a software layer as a service.","page":7},{"id":"d15","type":"definition","frTerm":"Critères de choix","answer":"Selection criteria","definition":"Defining selection criteria allows you to select the most relevant criteria based on a goal to be achieved.","page":7},{"id":"d16","type":"definition","frTerm":"Architecture logicielle","answer":"Software architecture","definition":"A software architecture is designed with the needs of the future user of the application based on the study and the results of creating an element or functionality of the software that will suit the needs in question.","page":7},{"id":"d17","type":"definition","frTerm":"« Informatique en nuage »","answer":"Cloud computing","definition":"Software or data hosted or launched on remote servers, accessible from anywhere on the internet.","page":7},{"id":"d18","type":"definition","frTerm":"Test d’intrusion","answer":"Pentest","definition":"Pentest is an ethical hacking technique that tests the vulnerability of a computer system, application or website by detecting vulnerabilities that may be exploited by a hacker or malware.","page":7},{"id":"d19","type":"definition","frTerm":"Politique de sécurité","answer":"Security policy","definition":"A security policy is an action plan defined to preserve the integrity and sustainability of a social group.","page":7},{"id":"d20","type":"definition","frTerm":"Feuille de route","answer":"Roadmap","definition":"The roadmap generally proposes a list of means, the target or targets, principles to follow and values to be respected, the priority of tasks, and a timetable for achieving those goals.","page":7},{"id":"d21","type":"definition","frTerm":"Argumenter pour convaincre","answer":"Arguing to convince","definition":"Arguing to convince supports an assertion using reasoning or evidence.","page":7},{"id":"d22","type":"definition","frTerm":"Mise en place d’un outil d’audit","answer":"Setting up an audit tool","definition":"The purpose of setting up an audit tool is to identify and assess the risks (operational, financial, reputational in particular) associated with the IT activities of a company or administration.","page":8},{"id":"d23","type":"definition","frTerm":"Perfectionnement du développement","answer":"Development improvement","definition":"Development improvement is an approach that aims to perfect the programs developed by offering innovative technical solutions.","page":8},{"id":"d24","type":"definition","frTerm":"Mise en œuvre d’une démarche qualité","answer":"Setting up a quality approach","definition":"The quality approach is all the actions carried out by a company to: improve quality management, offer better products, services to customers, and make employees evolve.","page":8},{"id":"d25","type":"definition","frTerm":"Définir une matrice de choix","answer":"Matrix of choices","definition":"The matrix of choices is a table that brings together all our choices as well as the different criteria to consider in order to decide between them. This matrix facilitates decision-making because it lets you know which is the best choice through a weighting system.","page":8}];
+    const TYPE_LABELS = { word: "Mot métier", expression: "Expression métier", definition: "Définition expert" };
+    const STORAGE_KEY = "maalsi-english-qcm-v1";
+
+    const $ = (id) => document.getElementById(id);
+    const views = ["homeView", "quizView", "resultView", "libraryView"];
+    let appState = loadState();
+    let quiz = null;
+    let libraryFilter = "all";
+    let toastTimer = null;
+
+    function defaultState() {
+      return { stats: {}, bestExam: null, theme: "light" };
+    }
+
+    function loadState() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
+        return { ...defaultState(), ...(parsed || {}) };
+      } catch { return defaultState(); }
+    }
+
+    function saveState() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(appState)); } catch {}
+    }
+
+    function showView(id) {
+      views.forEach(v => $(v).classList.toggle("hidden", v !== id));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function shuffle(array) {
+      const a = [...array];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function answerFor(item) { return item.answer; }
+    function promptFor(item) { return item.type === "definition" ? item.definition : item.fr; }
+
+    function normalizedTokens(text) {
+      return text.toLowerCase().replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter(Boolean);
+    }
+
+    function makeOptions(item) {
+      const correct = answerFor(item);
+      const pool = DATA.filter(x => x.type === item.type && x.id !== item.id);
+      const correctTokens = new Set(normalizedTokens(correct));
+      const ranked = pool.map(candidate => {
+        const value = answerFor(candidate);
+        const tokens = normalizedTokens(value);
+        const overlap = tokens.filter(t => correctTokens.has(t)).length;
+        const lengthGap = Math.abs(value.length - correct.length) / Math.max(value.length, correct.length, 1);
+        return { value, score: overlap * 4 - lengthGap + Math.random() * 1.8 };
+      }).sort((a, b) => b.score - a.score);
+      const picks = [];
+      for (const row of ranked) {
+        if (!picks.includes(row.value) && row.value !== correct) picks.push(row.value);
+        if (picks.length === 3) break;
+      }
+      return shuffle([correct, ...picks]);
+    }
+
+    function buildQuestions(items) {
+      return items.map(item => ({ item, options: makeOptions(item) }));
+    }
+
+    function itemDifficulty(item) {
+      const s = appState.stats[item.id] || { attempts: 0, correct: 0, lastWrong: false };
+      if (!s.attempts) return -100 + Math.random();
+      const accuracy = s.correct / s.attempts;
+      return accuracy * 100 + s.attempts * 1.4 + (s.lastWrong ? -30 : 0) + Math.random() * 4;
+    }
+
+    function startQuiz(items, options = {}) {
+      if (!items.length) {
+        toast("Aucune question disponible dans ce mode pour le moment.");
+        return;
+      }
+      quiz = {
+        title: options.title || "Entraînement",
+        exam: !!options.exam,
+        immediate: options.immediate !== false,
+        questions: buildQuestions(items),
+        index: 0,
+        answers: [],
+        locked: false
+      };
+      $("quizModeTitle").textContent = quiz.title;
+      showView("quizView");
+      renderQuestion();
+    }
+
+    function startSmart() {
+      const selected = [...DATA].sort((a, b) => itemDifficulty(a) - itemDifficulty(b)).slice(0, 15);
+      startQuiz(shuffle(selected), { title: "Révision intelligente · 15 questions", immediate: true });
+    }
+
+    function startExam() {
+      startQuiz(shuffle(DATA).slice(0, 125), { title: "Examen blanc · 125 questions", immediate: false, exam: true });
+    }
+
+    function getMistakeItems() {
+      return DATA.filter(item => appState.stats[item.id]?.lastWrong);
+    }
+
+    function startMistakes(items = null) {
+      const selected = items || getMistakeItems();
+      startQuiz(shuffle(selected), { title: "Révision de mes erreurs", immediate: true });
+    }
+
+    function renderQuestion() {
+      const q = quiz.questions[quiz.index];
+      const item = q.item;
+      quiz.locked = false;
+      $("quizCounter").textContent = `Question ${quiz.index + 1} sur ${quiz.questions.length}`;
+      $("progressFill").style.width = `${(quiz.index / quiz.questions.length) * 100}%`;
+      $("questionBadge").textContent = TYPE_LABELS[item.type];
+      $("pageRef").textContent = `Source : p. ${item.page}`;
+      $("questionInstruction").textContent = item.type === "definition" ? "Quel terme anglais correspond à cette définition ?" : "Choisis la traduction anglaise";
+      $("questionText").textContent = promptFor(item);
+      $("questionText").classList.toggle("definition", item.type === "definition");
+      $("feedbackBox").className = "feedback hidden";
+      $("feedbackBox").innerHTML = "";
+      $("nextBtn").classList.add("hidden");
+      $("speakBtn").classList.add("hidden");
+      $("unknownBtn").disabled = false;
+
+      const container = $("optionsContainer");
+      container.innerHTML = "";
+      q.options.forEach((option, i) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.dataset.answer = option;
+        btn.innerHTML = `<span class="option-key">${i + 1}</span><span></span>`;
+        btn.querySelector("span:last-child").textContent = option;
+        btn.addEventListener("click", () => answerCurrent(option, btn));
+        container.appendChild(btn);
+      });
+    }
+
+    function updateItemStats(item, correct) {
+      const s = appState.stats[item.id] || { attempts: 0, correct: 0, lastWrong: false, streak: 0 };
+      s.attempts += 1;
+      if (correct) {
+        s.correct += 1;
+        s.lastWrong = false;
+        s.streak = (s.streak || 0) + 1;
+      } else {
+        s.lastWrong = true;
+        s.streak = 0;
+      }
+      appState.stats[item.id] = s;
+      saveState();
+    }
+
+    function answerCurrent(selected, clickedBtn = null) {
+      if (!quiz || quiz.locked) return;
+      quiz.locked = true;
+      const q = quiz.questions[quiz.index];
+      const correctAnswer = answerFor(q.item);
+      const correct = selected === correctAnswer;
+      quiz.answers.push({ item: q.item, selected, correct });
+      updateItemStats(q.item, correct);
+      $("unknownBtn").disabled = true;
+
+      if (!quiz.immediate) {
+        setTimeout(nextQuestion, 170);
+        return;
+      }
+
+      document.querySelectorAll(".option-btn").forEach(btn => {
+        btn.disabled = true;
+        if (btn.dataset.answer === correctAnswer) btn.classList.add("correct");
+        if (clickedBtn && btn === clickedBtn && !correct) btn.classList.add("wrong");
+      });
+
+      const feedback = $("feedbackBox");
+      feedback.className = `feedback ${correct ? "success" : "error"}`;
+      feedback.innerHTML = `<div class="feedback-title">${correct ? "Bonne réponse." : "À retenir."}</div><div>Réponse correcte : <span class="feedback-answer"></span></div>`;
+      feedback.querySelector(".feedback-answer").textContent = correctAnswer;
+      $("nextBtn").textContent = quiz.index === quiz.questions.length - 1 ? "Voir les résultats" : "Question suivante";
+      $("nextBtn").classList.remove("hidden");
+      $("speakBtn").classList.remove("hidden");
+    }
+
+    function nextQuestion() {
+      if (!quiz) return;
+      if (quiz.index < quiz.questions.length - 1) {
+        quiz.index += 1;
+        renderQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function finishQuiz() {
+      $("progressFill").style.width = "100%";
+      const score = quiz.answers.filter(a => a.correct).length;
+      const total = quiz.questions.length;
+      const percent = Math.round((score / total) * 100);
+      if (quiz.exam && total === 125 && (!appState.bestExam || score > appState.bestExam)) {
+        appState.bestExam = score;
+        saveState();
+      }
+
+      $("resultScore").textContent = `${score}/${total}`;
+      $("resultPercent").textContent = `${percent} %`;
+      $("resultTitle").textContent = percent >= 80 ? "Très bonne session" : percent >= 60 ? "Bonne base, continue" : "Encore quelques tours et ça va rentrer";
+      $("resultMessage").textContent = quiz.exam
+        ? "Le barème A à D est calculé exactement sur les seuils indiqués dans le document de l’école."
+        : "Tes erreurs ont été enregistrées pour alimenter la révision intelligente.";
+
+      if (quiz.exam && total === 125) {
+        const grade = score >= 100 ? "A" : score >= 75 ? "B" : score >= 50 ? "C" : "D";
+        $("resultGrade").textContent = `Note ${grade}`;
+        $("resultGrade").classList.remove("hidden");
+      } else {
+        $("resultGrade").classList.add("hidden");
+      }
+
+      const types = ["word", "expression", "definition"];
+      $("breakdownGrid").innerHTML = types.map(type => {
+        const rows = quiz.answers.filter(a => a.item.type === type);
+        if (!rows.length) return "";
+        const ok = rows.filter(a => a.correct).length;
+        return `<div class="breakdown"><span class="stat-label">${TYPE_LABELS[type]}</span><strong>${ok}/${rows.length}</strong></div>`;
+      }).join("");
+
+      const mistakes = quiz.answers.filter(a => !a.correct);
+      $("mistakeSection").classList.toggle("hidden", mistakes.length === 0);
+      $("retryMistakesBtn").classList.toggle("hidden", mistakes.length === 0);
+      $("resultMistakes").innerHTML = "";
+      mistakes.slice(0, 30).forEach(m => {
+        const div = document.createElement("div");
+        div.className = "mistake-item";
+        div.innerHTML = `<div class="prompt"></div><div class="answer"></div>`;
+        div.querySelector(".prompt").textContent = promptFor(m.item);
+        div.querySelector(".answer").textContent = `✓ ${answerFor(m.item)}`;
+        $("resultMistakes").appendChild(div);
+      });
+      if (mistakes.length > 30) {
+        const more = document.createElement("div");
+        more.className = "empty";
+        more.textContent = `Et ${mistakes.length - 30} autre(s) réponse(s) à revoir.`;
+        $("resultMistakes").appendChild(more);
+      }
+
+      quiz.finalMistakes = mistakes.map(m => m.item);
+      updateDashboard();
+      showView("resultView");
+    }
+
+    function quitQuiz() {
+      if (!quiz || quiz.index === 0 || confirm("Quitter cette session ? La progression déjà répondue restera enregistrée.")) {
+        quiz = null;
+        updateDashboard();
+        showView("homeView");
+      }
+    }
+
+    function speak(text) {
+      if (!("speechSynthesis" in window)) {
+        toast("La prononciation n’est pas disponible dans ce navigateur.");
+        return;
+      }
+      speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = "en-US";
+      utterance.rate = .9;
+      speechSynthesis.speak(utterance);
+    }
+
+    function updateDashboard() {
+      const rows = Object.values(appState.stats);
+      const attempts = rows.reduce((sum, s) => sum + (s.attempts || 0), 0);
+      const correct = rows.reduce((sum, s) => sum + (s.correct || 0), 0);
+      const mastered = DATA.filter(item => {
+        const s = appState.stats[item.id];
+        return s && s.correct >= 2 && s.correct / s.attempts >= .75;
+      }).length;
+      const mistakes = getMistakeItems().length;
+      $("masteredStat").textContent = `${mastered}/126`;
+      $("bestStat").textContent = appState.bestExam == null ? "—" : `${appState.bestExam}/125`;
+      $("mistakesStat").textContent = mistakes;
+      $("accuracyStat").textContent = attempts ? `${Math.round(correct / attempts * 100)} %` : "—";
+      $("mistakeModeMeta").textContent = mistakes ? `${mistakes} question${mistakes > 1 ? "s" : ""} disponible${mistakes > 1 ? "s" : ""}` : "Aucune erreur";
+      $("mistakeModeBtn").disabled = mistakes === 0;
+    }
+
+    function renderCountdown() {
+      const now = new Date();
+      const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const target = new Date(2026, 6, 17);
+      const days = Math.ceil((target - today) / 86400000);
+      $("countdownText").textContent = days > 1 ? `J-${days}` : days === 1 ? "demain" : days === 0 ? "aujourd’hui" : "date passée";
+    }
+
+    function renderLibrary() {
+      const query = $("librarySearch").value.trim().toLowerCase();
+      const items = DATA.filter(item => {
+        if (libraryFilter !== "all" && item.type !== libraryFilter) return false;
+        const haystack = [item.fr, item.frTerm, item.answer, item.definition].filter(Boolean).join(" ").toLowerCase();
+        return !query || haystack.includes(query);
+      });
+      const list = $("libraryList");
+      list.innerHTML = "";
+      if (!items.length) {
+        list.innerHTML = '<div class="empty">Aucun résultat.</div>';
+        return;
+      }
+      items.forEach(item => {
+        const div = document.createElement("article");
+        div.className = "library-item";
+        const heading = item.type === "definition" ? item.definition : item.fr;
+        const secondary = item.type === "definition" ? `${item.answer} · ${item.frTerm}` : item.answer;
+        div.innerHTML = `<div><h3></h3><div class="library-answer"></div><div class="library-meta">${TYPE_LABELS[item.type]} · page ${item.page}</div></div><button class="icon-btn" title="Écouter la réponse">▶</button>`;
+        div.querySelector("h3").textContent = heading;
+        div.querySelector(".library-answer").textContent = secondary;
+        div.querySelector("button").addEventListener("click", () => speak(item.answer));
+        list.appendChild(div);
+      });
+    }
+
+    function toast(message) {
+      clearTimeout(toastTimer);
+      $("toast").textContent = message;
+      $("toast").classList.remove("hidden");
+      toastTimer = setTimeout(() => $("toast").classList.add("hidden"), 2800);
+    }
+
+    function applyTheme() {
+      document.documentElement.dataset.theme = appState.theme;
+      $("themeBtn").textContent = appState.theme === "dark" ? "☀" : "◐";
+    }
+
+    function resetProgress() {
+      if (!confirm("Effacer toute ta progression et ton meilleur score ?")) return;
+      const theme = appState.theme;
+      appState = { ...defaultState(), theme };
+      saveState();
+      updateDashboard();
+      toast("Progression réinitialisée.");
+    }
+
+    $("smartStartBtn").addEventListener("click", startSmart);
+    $("smartModeBtn").addEventListener("click", startSmart);
+    $("examStartBtn").addEventListener("click", startExam);
+    $("examModeBtn").addEventListener("click", startExam);
+    $("mistakeModeBtn").addEventListener("click", () => startMistakes());
+    $("customStartBtn").addEventListener("click", () => {
+      const category = $("categorySelect").value;
+      const countValue = $("countSelect").value;
+      let pool = category === "all" ? [...DATA] : DATA.filter(i => i.type === category);
+      pool = shuffle(pool);
+      const count = countValue === "all" ? pool.length : Math.min(Number(countValue), pool.length);
+      startQuiz(pool.slice(0, count), {
+        title: `Entraînement personnalisé · ${count} questions`,
+        immediate: $("instantToggle").checked
+      });
+    });
+    $("libraryBtn").addEventListener("click", () => { showView("libraryView"); renderLibrary(); });
+    $("libraryHomeBtn").addEventListener("click", () => { updateDashboard(); showView("homeView"); });
+    $("homeBtn").addEventListener("click", () => { updateDashboard(); showView("homeView"); });
+    $("quitQuizBtn").addEventListener("click", quitQuiz);
+    $("unknownBtn").addEventListener("click", () => answerCurrent(null));
+    $("nextBtn").addEventListener("click", nextQuestion);
+    $("speakBtn").addEventListener("click", () => {
+      const current = quiz?.questions[quiz.index]?.item;
+      if (current) speak(answerFor(current));
+    });
+    $("retryMistakesBtn").addEventListener("click", () => startMistakes(quiz?.finalMistakes || getMistakeItems()));
+    $("restartBtn").addEventListener("click", () => { updateDashboard(); showView("homeView"); });
+    $("resultHomeBtn").addEventListener("click", () => { updateDashboard(); showView("homeView"); });
+    $("resetBtn").addEventListener("click", resetProgress);
+    $("themeBtn").addEventListener("click", () => {
+      appState.theme = appState.theme === "dark" ? "light" : "dark";
+      saveState();
+      applyTheme();
+    });
+    $("librarySearch").addEventListener("input", renderLibrary);
+    $("libraryTabs").addEventListener("click", (event) => {
+      const tab = event.target.closest(".tab");
+      if (!tab) return;
+      libraryFilter = tab.dataset.filter;
+      document.querySelectorAll(".tab").forEach(t => t.classList.toggle("active", t === tab));
+      renderLibrary();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (!$("quizView").classList.contains("hidden") && quiz) {
+        if (["1", "2", "3", "4"].includes(event.key) && !quiz.locked) {
+          const btn = document.querySelectorAll(".option-btn")[Number(event.key) - 1];
+          btn?.click();
+        }
+        if (event.key === "Enter" && !$("nextBtn").classList.contains("hidden")) $("nextBtn").click();
+      }
+    });
+
+    applyTheme();
+    renderCountdown();
+    updateDashboard();
+  </script>
+</body>
+</html>
